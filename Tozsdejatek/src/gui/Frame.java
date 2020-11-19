@@ -3,9 +3,13 @@ package gui;
 import exceptions.NotEnoughFundException;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.text.DecimalFormat;
 import java.util.Timer;
 import game.Game;
@@ -17,7 +21,7 @@ public class Frame extends JFrame {
 
     Game game;
     boolean gameAdded = false;
-    public DecimalFormat df = new DecimalFormat("0.00");
+    public static DecimalFormat df = new DecimalFormat("0.00");
 
     protected java.util.Timer timer;
 
@@ -28,7 +32,7 @@ public class Frame extends JFrame {
     JPanel rightHeader = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
     JPanel stocksPanel = new JPanel();
-    JPanel activePositionsPanel = new JPanel(new BorderLayout());
+    public JPanel activePositionsPanel = new JPanel(new BorderLayout());
     JPanel closedPositionsPanel = new JPanel(new BorderLayout());
     JTabbedPane pages = new JTabbedPane();
 
@@ -45,6 +49,8 @@ public class Frame extends JFrame {
 
 
     public Frame(){
+
+        this.setMinimumSize(new Dimension(1050, 510));
         name = new JLabel("Player: ");
         capital = new JLabel("Capital: ");
         name.setFont(new Font("SF", Font.BOLD, 25));
@@ -56,9 +62,9 @@ public class Frame extends JFrame {
         menuBar.setBackground(new Color(45,45,45));
         gameMenu.setBackground(new Color(45,45,45));*/
         //pages.setBackground(new Color(45,45,45));
-        stocksPanel.setBackground(new Color(45,45,45));
+   /*     stocksPanel.setBackground(new Color(45,45,45));
         activePositionsPanel.setBackground(new Color(45,45,45));
-        closedPositionsPanel.setBackground(new Color(45,45,45));
+        closedPositionsPanel.setBackground(new Color(45,45,45));*/
 
 
         gameMenu.add(newMenuItem);
@@ -84,14 +90,23 @@ public class Frame extends JFrame {
 
 
         //stocksPanel.add(new JLabel("Stocks"));
-        activePositionsPanel.add(new JLabel("Active Positions"));
+        //activePositionsPanel.add(new JLabel("Active Positions"));
         closedPositionsPanel.add(new JLabel("Closed Positions"));
 
         stocksPanel.setLayout(new BoxLayout(stocksPanel, BoxLayout.Y_AXIS));
         JScrollPane stocksPanelScrollPane = new JScrollPane(stocksPanel);
+        JScrollPane activePositionsScrollPane = new JScrollPane(activePositionsPanel);
+        stocksPanelScrollPane.setPreferredSize(new Dimension(300, this.getHeight() - 150));
+        activePositionsScrollPane.setPreferredSize(new Dimension(300, this.getHeight() - 150));
+        this.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent componentEvent) {
+                stocksPanelScrollPane.setPreferredSize(new Dimension(300, Frame.this.getHeight() - 150));
+                activePositionsScrollPane.setPreferredSize(new Dimension(300, Frame.this.getHeight() - 150));
+            }
+        });
 
         pages.add(stocksPanelScrollPane, "Stocks");
-        pages.add(activePositionsPanel, "Active Positions");
+        pages.add(activePositionsScrollPane, "Active Positions");
         pages.add(closedPositionsPanel, "Closed Positions");
         JLabel stocksTabLabel = new JLabel("Stocks");
         stocksTabLabel.setFont(new Font("SF", Font.PLAIN, 20));
@@ -103,23 +118,68 @@ public class Frame extends JFrame {
         pages.setTabComponentAt(1, activePositionstabLabel);
         pages.setTabComponentAt(2, closedPositionsTabLabel);
 
+/*        pages.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                System.out.println("Tab: " + pages.getSelectedIndex());
+                if(pages.getSelectedIndex() == 0){
+                    stocksPanel.setVisible(true);
+                    activePositionsPanel.setVisible(false);
+                    closedPositionsPanel.setVisible(false);
+
+                }else if(pages.getSelectedIndex() == 1){
+                    stocksPanel.setVisible(false);
+                    activePositionsPanel.setVisible(false);
+                    closedPositionsPanel.setVisible(false);
+                }else {
+                    stocksPanel.setVisible(false);
+                    activePositionsPanel.setVisible(false);
+                    closedPositionsPanel.setVisible(true);
+                }
+            }
+        });*/
+
+
         activePositionsPanel.setLayout(new BoxLayout(activePositionsPanel, BoxLayout.Y_AXIS));
-        PositionPanel positionPanel1 = new PositionPanel();
-        PositionPanel positionPanel2= new PositionPanel();
-        positionPanel1.setPreferredSize(new Dimension(100, 20));
-        positionPanel1.setMaximumSize(new Dimension(100, 20));
-        positionPanel1.setMinimumSize(new Dimension(100, 20));
-        positionPanel2.setPreferredSize(new Dimension(100, 20));
-        positionPanel2.setMaximumSize(new Dimension(100, 20));
-        positionPanel2.setMinimumSize(new Dimension(100, 20));
-        activePositionsPanel.add(new PositionPanel());
-        activePositionsPanel.add(new PositionPanel());
+
+
+        JPanel activePositionsHeader = new JPanel(new GridLayout(0,7));
+        activePositionsHeader.setPreferredSize(new Dimension(1000, 20));
+        activePositionsHeader.setMaximumSize(new Dimension(1000, 20));
+        activePositionsHeader.setMinimumSize(new Dimension(1000, 20));
+
+        JLabel idLabel = new JLabel("Id");
+        idLabel.setFont(new Font("SF", Font.BOLD, 14));
+        activePositionsHeader.add(idLabel);
+
+        JLabel stockNameLabel = new JLabel("Stock name");
+        stockNameLabel.setFont(new Font("SF", Font.BOLD, 14));
+        activePositionsHeader.add(stockNameLabel);
+
+
+        JLabel typeLabel = new JLabel("Type");
+        typeLabel.setFont(new Font("SF", Font.BOLD, 14));
+        activePositionsHeader.add(typeLabel);
+
+        JLabel startingValueLabel = new JLabel("Starting value");
+        startingValueLabel.setFont(new Font("SF", Font.BOLD, 14));
+        activePositionsHeader.add(startingValueLabel);
+
+        JLabel currentValueLabel = new JLabel("Current value");
+        currentValueLabel.setFont(new Font("SF", Font.BOLD, 14));
+        activePositionsHeader.add(currentValueLabel);
+
+        JLabel changeLabel = new JLabel("Change");
+        changeLabel.setFont(new Font("SF", Font.BOLD, 14));
+        activePositionsHeader.add(changeLabel);
+
+        activePositionsPanel.add(activePositionsHeader);
 
         //this.add(pages, BorderLayout.CENTER);
         north.add(pages);
         this.add(north, BorderLayout.NORTH);
-        this.setMinimumSize(new Dimension(1000, 500));
+
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
     }
 
     public Game getGame(){

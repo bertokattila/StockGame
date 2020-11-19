@@ -1,6 +1,8 @@
 package game;
 
 import exceptions.NotEnoughFundException;
+import gui.Frame;
+import gui.PositionPanel;
 
 import java.util.LinkedList;
 
@@ -17,15 +19,18 @@ public class Player {
     }
 
 
-    public void makePosition(Stock stock, double value, Position.PositionType type) throws NotEnoughFundException {
+    public Position makePosition(Stock stock, double value, Position.PositionType type) throws NotEnoughFundException {
+        Position position;
         double numberOfStocks = value/stock.currentValue();
         if(value > capital){
             throw new NotEnoughFundException();
         }
         else {
-            openPositions.add(new Position(stock, numberOfStocks, type, 1.0));
+            position = new Position(openPositions.size() + closedPositions.size() + 1, stock, numberOfStocks, type, 1.0);
+            openPositions.add(position);
             capital -= value;
         }
+        return position;
     }
 
 

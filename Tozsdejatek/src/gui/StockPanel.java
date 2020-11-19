@@ -20,6 +20,9 @@ public class StockPanel extends JPanel {
     public StockPanel(Stock stock, Frame parentFrame){
         frame = parentFrame;
         this.setLayout(new GridLayout(0, 4));
+        this.setPreferredSize(new Dimension(1000, 50));
+        this.setMaximumSize(new Dimension(1000, 50));
+        this.setMinimumSize(new Dimension(1000, 50));
         this.name = new JLabel(stock.getName());
         this.add(name);
         this.value = new JLabel("Value: " + stock.currentValue() + "$");

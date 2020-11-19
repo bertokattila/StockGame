@@ -1,6 +1,11 @@
 package game;
 
+import gui.PositionPanel;
+
+import javax.swing.*;
+
 public class Position {
+    private final int id;
     private final Stock stock;
     private final PositionType type;
     private final double startingStockValue;
@@ -8,6 +13,7 @@ public class Position {
     private final double numberOfStocks;
     private final double leverage;
     boolean active = true;
+    PositionPanel positionPanel;
 
     public enum PositionType{
         SHORT,
@@ -16,13 +22,15 @@ public class Position {
 
     /**
      * Uj pozicio letrehozasa egy reszvenybol
+     * @param id
      * @param stock Reszveny, amibol letrejon a pozicio
      * @param numberOfStocks Reszveny darabszam
      * @param type Pozicio tipusa
      * @param leverage Tokeattet
      */
-    public Position(Stock stock, double numberOfStocks, PositionType type, double leverage){
-       this.stock = stock;
+    public Position(int id, Stock stock, double numberOfStocks, PositionType type, double leverage){
+        this.id = id;
+        this.stock = stock;
         this.startingStockValue = stock.currentValue();
         currentValue = numberOfStocks * stock.currentValue();
         this.type = type;
@@ -38,13 +46,28 @@ public class Position {
             /// sima shortolas
             currentValue =  startingStockValue * numberOfStocks + numberOfStocks * (startingStockValue - stock.currentValue());
         }
-        if(currentValue <= 0) active = false;
+        if(currentValue <= 0){
+            active = false;
+            positionPanel.remove();
+        }
+
+        positionPanel.refresh();
 
         System.out.println(currentValue);
     }
 
-    public double getCurrentValue(){ return numberOfStocks * stock.currentValue(); }
-    public void sell(){
+    public void addPositionPanel(PositionPanel positionPanel){
+        this.positionPanel = positionPanel;
+    }
 
+    public int getId(){ return id; }
+    public Stock getStock(){ return stock; }
+    public PositionType getType(){ return type; }
+    public double getCurrentValue(){ return currentValue; }
+    public double getStartingStockValue(){ return startingStockValue; }
+    public double getNumberOfStocks(){ return numberOfStocks; }
+    public void sell(){
+        active = false;
+        positionPanel.remove();
     }
 }

@@ -51,16 +51,22 @@ class MakePositionActionListener implements ActionListener {
 
         if(e.getActionCommand().equals("long")) {
             try {
-                frame.getGame().getPlayer().makePosition(this.stock, value, Position.PositionType.LONG);
-                frame.capital.setText("Capital:" + frame.df.format(frame.getGame().getPlayer().getCapital()) + "$");
+                Position position = frame.getGame().getPlayer().makePosition(this.stock, value, Position.PositionType.LONG);
+                frame.capital.setText("Capital:" + Frame.df.format(frame.getGame().getPlayer().getCapital()) + "$");
+                PositionPanel positionPanel = new PositionPanel(position, frame.activePositionsPanel);
+                position.addPositionPanel(positionPanel);
+                frame.activePositionsPanel.add(positionPanel);
             } catch (NotEnoughFundException notEnoughFundException) {
                 notEnoughFundException.printStackTrace();
             }
         }
         else {
             try {
-                frame.getGame().getPlayer().makePosition(this.stock, value, Position.PositionType.SHORT);
-                frame.capital.setText("Capital:" + frame.df.format(frame.getGame().getPlayer().getCapital()) + "$");
+                Position position = frame.getGame().getPlayer().makePosition(this.stock, value, Position.PositionType.SHORT);
+                frame.capital.setText("Capital:" + Frame.df.format(frame.getGame().getPlayer().getCapital()) + "$");
+                PositionPanel positionPanel = new PositionPanel(position, frame.activePositionsPanel);
+                position.addPositionPanel(positionPanel);
+                frame.activePositionsPanel.add(positionPanel);
             } catch (NotEnoughFundException notEnoughFundException) {
                 notEnoughFundException.printStackTrace();
             }
