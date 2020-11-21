@@ -1,26 +1,18 @@
 package gui;
 
-import exceptions.NotEnoughFundException;
-
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.text.DecimalFormat;
-import java.util.Timer;
+
 import game.Game;
-import game.Player;
-import game.Position;
 import game.Stock;
 
 public class Frame extends JFrame {
 
-    Game game;
-    boolean gameAdded = false;
+    private static Game game;
+    static boolean gameAdded = false;
     public static DecimalFormat df = new DecimalFormat("0.00");
 
     protected java.util.Timer timer;
@@ -31,14 +23,16 @@ public class Frame extends JFrame {
     JPanel leftHeader = new JPanel(new FlowLayout(FlowLayout.LEFT));
     JPanel rightHeader = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
-    JPanel stocksPanel = new JPanel();
-    public JPanel activePositionsPanel = new JPanel(new BorderLayout());
-    JPanel closedPositionsPanel = new JPanel(new BorderLayout());
+    private static JPanel stocksPanel = new JPanel();
+    public static JPanel activePositionsPanel = new JPanel();
+    private static JPanel closedPositionsHeader = new JPanel(new GridLayout(0,7));
+    private static JPanel activePositionsHeader = new JPanel(new GridLayout(0,7));
+    private static final JPanel closedPositionsPanel = new JPanel();
     JTabbedPane pages = new JTabbedPane();
 
 
-    JLabel name;
-    JLabel capital;
+    private static JLabel name;
+    static JLabel capital;
 
     JMenuBar menuBar = new JMenuBar();
     JMenu  gameMenu = new JMenu("Game");
@@ -73,6 +67,8 @@ public class Frame extends JFrame {
         menuBar.add(gameMenu);
 
         newMenuItem.addActionListener(new NewGameActionListener(this));
+        saveMenuItem.addActionListener(new SaveActionListener(saveMenuItem));
+        openMenuItem.addActionListener(new OpenActionListener(openMenuItem));
 
         north.setLayout(new BoxLayout(north, BoxLayout.Y_AXIS));
 
@@ -91,23 +87,32 @@ public class Frame extends JFrame {
 
         //stocksPanel.add(new JLabel("Stocks"));
         //activePositionsPanel.add(new JLabel("Active Positions"));
-        closedPositionsPanel.add(new JLabel("Closed Positions"));
+        //closedPositionsPanel.add(new JLabel("Closed Positions"));
 
         stocksPanel.setLayout(new BoxLayout(stocksPanel, BoxLayout.Y_AXIS));
         JScrollPane stocksPanelScrollPane = new JScrollPane(stocksPanel);
+
+        activePositionsPanel.setLayout(new BoxLayout(activePositionsPanel, BoxLayout.Y_AXIS));
         JScrollPane activePositionsScrollPane = new JScrollPane(activePositionsPanel);
+
+        closedPositionsPanel.setLayout(new BoxLayout(closedPositionsPanel, BoxLayout.Y_AXIS));
+        JScrollPane closedPositionsScrollPane = new JScrollPane(closedPositionsPanel);
+
+
         stocksPanelScrollPane.setPreferredSize(new Dimension(300, this.getHeight() - 150));
         activePositionsScrollPane.setPreferredSize(new Dimension(300, this.getHeight() - 150));
+        closedPositionsScrollPane.setPreferredSize(new Dimension(300, this.getHeight() - 150));
         this.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent componentEvent) {
                 stocksPanelScrollPane.setPreferredSize(new Dimension(300, Frame.this.getHeight() - 150));
                 activePositionsScrollPane.setPreferredSize(new Dimension(300, Frame.this.getHeight() - 150));
+                closedPositionsScrollPane.setPreferredSize(new Dimension(300, Frame.this.getHeight() - 150));
             }
         });
 
         pages.add(stocksPanelScrollPane, "Stocks");
         pages.add(activePositionsScrollPane, "Active Positions");
-        pages.add(closedPositionsPanel, "Closed Positions");
+        pages.add(closedPositionsScrollPane, "Closed Positions");
         JLabel stocksTabLabel = new JLabel("Stocks");
         stocksTabLabel.setFont(new Font("SF", Font.PLAIN, 20));
         JLabel activePositionstabLabel = new JLabel("Active Positions");
@@ -139,13 +144,15 @@ public class Frame extends JFrame {
         });*/
 
 
-        activePositionsPanel.setLayout(new BoxLayout(activePositionsPanel, BoxLayout.Y_AXIS));
 
-
-        JPanel activePositionsHeader = new JPanel(new GridLayout(0,7));
         activePositionsHeader.setPreferredSize(new Dimension(1000, 20));
         activePositionsHeader.setMaximumSize(new Dimension(1000, 20));
         activePositionsHeader.setMinimumSize(new Dimension(1000, 20));
+
+
+        closedPositionsHeader.setPreferredSize(new Dimension(1000, 20));
+        closedPositionsHeader.setMaximumSize(new Dimension(1000, 20));
+        closedPositionsHeader.setMinimumSize(new Dimension(1000, 20));
 
         JLabel idLabel = new JLabel("Id");
         idLabel.setFont(new Font("SF", Font.BOLD, 14));
@@ -154,7 +161,6 @@ public class Frame extends JFrame {
         JLabel stockNameLabel = new JLabel("Stock name");
         stockNameLabel.setFont(new Font("SF", Font.BOLD, 14));
         activePositionsHeader.add(stockNameLabel);
-
 
         JLabel typeLabel = new JLabel("Type");
         typeLabel.setFont(new Font("SF", Font.BOLD, 14));
@@ -172,7 +178,34 @@ public class Frame extends JFrame {
         changeLabel.setFont(new Font("SF", Font.BOLD, 14));
         activePositionsHeader.add(changeLabel);
 
-        activePositionsPanel.add(activePositionsHeader);
+
+        JLabel idLabelClosedPositionsHeader = new JLabel("Id");
+        idLabelClosedPositionsHeader.setFont(new Font("SF", Font.BOLD, 14));
+        closedPositionsHeader.add(idLabelClosedPositionsHeader);
+
+        JLabel stockNameLabelClosedPositionsHeader = new JLabel("Stock name");
+        stockNameLabelClosedPositionsHeader.setFont(new Font("SF", Font.BOLD, 14));
+        closedPositionsHeader.add(stockNameLabelClosedPositionsHeader);
+
+        JLabel typeLabelClosedPositionsHeader = new JLabel("Type");
+        typeLabelClosedPositionsHeader.setFont(new Font("SF", Font.BOLD, 14));
+        closedPositionsHeader.add(typeLabelClosedPositionsHeader);
+
+        JLabel startingValueLabelClosedPositionsHeader = new JLabel("Starting value");
+        startingValueLabelClosedPositionsHeader.setFont(new Font("SF", Font.BOLD, 14));
+        closedPositionsHeader.add(startingValueLabelClosedPositionsHeader);
+
+        JLabel currentValueLabelClosedPositionsHeader = new JLabel("Selling value");
+        currentValueLabelClosedPositionsHeader.setFont(new Font("SF", Font.BOLD, 14));
+        closedPositionsHeader.add(currentValueLabelClosedPositionsHeader);
+
+        JLabel changeLabelClosedPositionsHeader = new JLabel("Change");
+        changeLabelClosedPositionsHeader.setFont(new Font("SF", Font.BOLD, 14));
+        closedPositionsHeader.add(changeLabelClosedPositionsHeader);
+
+        JLabel profitLabelClosedPositionsHeader = new JLabel("Profit");
+        profitLabelClosedPositionsHeader.setFont(new Font("SF", Font.BOLD, 14));
+        closedPositionsHeader.add(profitLabelClosedPositionsHeader);
 
         //this.add(pages, BorderLayout.CENTER);
         north.add(pages);
@@ -182,16 +215,24 @@ public class Frame extends JFrame {
 
     }
 
-    public Game getGame(){
-        return this.game;
+    public static Game getGame(){
+        return game;
     }
 
     /**
      * Jatek hozzaadasa, lehet uj jatek vagy betoltott
      * @param game jatek objektum
      */
-    public void addGame(Game game){
-        this.game = game;
+    public static void addGame(Game game){
+        stocksPanel.removeAll();
+        activePositionsPanel.removeAll();
+        closedPositionsPanel.removeAll();
+        activePositionsPanel.add(activePositionsHeader);
+        closedPositionsPanel.add(closedPositionsHeader);
+        stocksPanel.updateUI();
+        activePositionsPanel.updateUI();
+        closedPositionsPanel.updateUI();
+        Frame.game = game;
         name.setText("Player: " + game.getPlayer().name);
         capital.setText("Capital: " + df.format(game.getPlayer().getCapital()) + "$");
         gameAdded = true;
@@ -200,10 +241,18 @@ public class Frame extends JFrame {
          */
         for (Stock stock:
         game.getStocks()){
-            StockPanel stockPanel = new StockPanel(stock, this);
+            StockPanel stockPanel = new StockPanel(stock);
             stock.setStockPanel(stockPanel);
             stocksPanel.add(stockPanel);
         }
+    }
+
+    public static void refreshCapital(){
+        capital.setText("Capital:" + Frame.df.format(game.getPlayer().getCapital()) + "$");
+    }
+
+    public static JPanel getClosedPositionsPanel(){
+        return closedPositionsPanel;
     }
 
 }

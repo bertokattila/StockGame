@@ -4,13 +4,15 @@ import exceptions.NotEnoughFundException;
 import gui.Frame;
 import gui.PositionPanel;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class Player {
+public class Player implements Serializable {
     public String name;
     private double capital;
-    LinkedList<Position> openPositions = new LinkedList<>();
-    LinkedList<Position> closedPositions = new LinkedList<>();
+    ArrayList<Position> openPositions = new ArrayList<>();
+    ArrayList<Position> closedPositions = new ArrayList<>();
 
 
     public Player(String name, double capital){
@@ -39,6 +41,13 @@ public class Player {
         :openPositions){
             position.refreshValue();
         }
+    }
+
+    public void sellPosition(Position position){
+        capital += position.getCurrentValue();
+        position.sell();
+        closedPositions.add(position);
+        openPositions.remove(position);
     }
 
     public double getCapital() {

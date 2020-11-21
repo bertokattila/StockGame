@@ -14,6 +14,7 @@ public class SellPositionActionListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        position.sell();
+        Frame.getGame().getPlayer().sellPosition(position);
+        Frame.refreshCapital();
     }
 }

@@ -17,8 +17,8 @@ public class StockPanel extends JPanel {
     private JButton shortButton;
 
 
-    public StockPanel(Stock stock, Frame parentFrame){
-        frame = parentFrame;
+    public StockPanel(Stock stock){
+
         this.setLayout(new GridLayout(0, 4));
         this.setPreferredSize(new Dimension(1000, 50));
         this.setMaximumSize(new Dimension(1000, 50));

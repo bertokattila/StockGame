@@ -14,8 +14,14 @@ public class PositionPanel extends JPanel {
     JLabel currentvalue;
     JLabel change;
     JButton sellButton = new JButton("Sell");
+    JLabel profitLabel;
     JPanel parentPanel;
 
+    /**
+     * Konstruktor
+     * @param position a pozicio, amit reprezental
+     * @param parentPanel a panel, ami tartalmazza ot
+     */
     public PositionPanel(Position position, JPanel parentPanel){
         this.position = position;
         this.parentPanel = parentPanel;
@@ -33,6 +39,9 @@ public class PositionPanel extends JPanel {
         currentvalue = new JLabel(Frame.df.format(position.getCurrentValue()) + "$");
         change = new JLabel("0%");
 
+        profitLabel = new JLabel("0$");
+        profitLabel.setVisible(false);
+
         this.add(id);
         this.add(stockName);
         this.add(type);
@@ -43,6 +52,9 @@ public class PositionPanel extends JPanel {
 
     }
 
+    /**
+     * Megjelenites frissitese az aktualis adatokkal
+     */
     public void refresh(){
         currentvalue.setText(Frame.df.format(position.getCurrentValue()) + "$");
         double change = 100 * (position.getCurrentValue() / (position.getStartingStockValue() * position.getNumberOfStocks())) - 100;
@@ -55,8 +67,19 @@ public class PositionPanel extends JPanel {
         }
     }
 
-    public void remove(){
+    /**
+     * A hozza tartozo pozicio lezarasra kerult, ehhez
+     * igazodik a grafikus reprezentacioja
+     */
+    public void close(){
         this.setVisible(false);
+        Frame.getClosedPositionsPanel().add(this);
         parentPanel.remove(this);
+        this.remove(sellButton);
+        profitLabel.setText(Frame.df.format(position.getCurrentValue() - (position.getStartingStockValue() * position.getNumberOfStocks())) + "$" );
+        this.add(profitLabel);
+        profitLabel.setVisible(true);
+        this.setVisible(true);
+        
     }
 }

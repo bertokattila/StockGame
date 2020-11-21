@@ -45,7 +45,7 @@ class NewGameActionListener implements ActionListener {
         frame.addGame(game);
 
         frame.timer = new Timer();
-        frame.timer.scheduleAtFixedRate(game, 0, 1000);
+        frame.timer.scheduleAtFixedRate(game, 0, 3000);
     }
 
 }

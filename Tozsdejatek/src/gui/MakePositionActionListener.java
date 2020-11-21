@@ -51,8 +51,8 @@ class MakePositionActionListener implements ActionListener {
 
         if(e.getActionCommand().equals("long")) {
             try {
-                Position position = frame.getGame().getPlayer().makePosition(this.stock, value, Position.PositionType.LONG);
-                frame.capital.setText("Capital:" + Frame.df.format(frame.getGame().getPlayer().getCapital()) + "$");
+                Position position = Frame.getGame().getPlayer().makePosition(this.stock, value, Position.PositionType.LONG);
+                frame.refreshCapital();
                 PositionPanel positionPanel = new PositionPanel(position, frame.activePositionsPanel);
                 position.addPositionPanel(positionPanel);
                 frame.activePositionsPanel.add(positionPanel);
@@ -62,8 +62,8 @@ class MakePositionActionListener implements ActionListener {
         }
         else {
             try {
-                Position position = frame.getGame().getPlayer().makePosition(this.stock, value, Position.PositionType.SHORT);
-                frame.capital.setText("Capital:" + Frame.df.format(frame.getGame().getPlayer().getCapital()) + "$");
+                Position position = Frame.getGame().getPlayer().makePosition(this.stock, value, Position.PositionType.SHORT);
+                frame.refreshCapital();
                 PositionPanel positionPanel = new PositionPanel(position, frame.activePositionsPanel);
                 position.addPositionPanel(positionPanel);
                 frame.activePositionsPanel.add(positionPanel);

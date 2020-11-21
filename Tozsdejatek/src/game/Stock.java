@@ -3,10 +3,11 @@ package game;
 import gui.Frame;
 import gui.StockPanel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Stock {
+public class Stock implements Serializable {
 
     private final String name;
 
@@ -16,7 +17,7 @@ public class Stock {
     private final ArrayList<Double> valueHistory = new ArrayList<>();
 
     ///referencia a stockPanelre, ami megjeleniti ot
-    private StockPanel stockPanel;
+    private transient StockPanel stockPanel;
 
     public Stock(String name, double startingValue){
         this.name = name;

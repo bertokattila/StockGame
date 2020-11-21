@@ -1,9 +1,10 @@
 package game;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.TimerTask;
 
-public class Game extends TimerTask {
+public class Game extends TimerTask implements Serializable {
     Player player;
     long time;
     ArrayList<Stock> stocks;

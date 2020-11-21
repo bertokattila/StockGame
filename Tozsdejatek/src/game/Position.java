@@ -3,8 +3,9 @@ package game;
 import gui.PositionPanel;
 
 import javax.swing.*;
+import java.io.Serializable;
 
-public class Position {
+public class Position implements Serializable {
     private final int id;
     private final Stock stock;
     private final PositionType type;
@@ -13,7 +14,7 @@ public class Position {
     private final double numberOfStocks;
     private final double leverage;
     boolean active = true;
-    PositionPanel positionPanel;
+    private transient PositionPanel positionPanel;
 
     public enum PositionType{
         SHORT,
@@ -48,7 +49,7 @@ public class Position {
         }
         if(currentValue <= 0){
             active = false;
-            positionPanel.remove();
+            positionPanel.close();
         }
 
         positionPanel.refresh();
@@ -68,6 +69,6 @@ public class Position {
     public double getNumberOfStocks(){ return numberOfStocks; }
     public void sell(){
         active = false;
-        positionPanel.remove();
+        positionPanel.close();
     }
 }
