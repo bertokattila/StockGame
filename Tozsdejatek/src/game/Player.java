@@ -53,4 +53,7 @@ public class Player implements Serializable {
     public double getCapital() {
         return capital;
     }
+
+    public ArrayList<Position> getOpenPositionsPositions(){ return openPositions; }
+    public ArrayList<Position> getClosedPositions(){ return closedPositions; }
 }

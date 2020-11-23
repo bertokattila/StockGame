@@ -1,6 +1,7 @@
 package game;
 
 import gui.Frame;
+import gui.StockChart;
 import gui.StockPanel;
 
 import java.io.Serializable;
@@ -19,6 +20,8 @@ public class Stock implements Serializable {
     ///referencia a stockPanelre, ami megjeleniti ot
     private transient StockPanel stockPanel;
 
+    private transient StockChart chart;
+
     public Stock(String name, double startingValue){
         this.name = name;
         this.valueHistory.add(startingValue);
@@ -35,6 +38,10 @@ public class Stock implements Serializable {
      * @return aktualis ertek
      */
     public double currentValue(){  return valueHistory.get(valueHistory.size() - 1); }
+
+    public ArrayList<Double> getValueHistory() {
+        return valueHistory;
+    }
 
     /**
      * Visszaadja az utolso valtozast (aranyszam)
@@ -58,7 +65,35 @@ public class Stock implements Serializable {
         if(stockPanel != null){
             stockPanel.refreshValue(currentValue());
         }
+        if(chart != null){
+            chart.addNewValue(currentValue(), valueHistory.size());
+        }
 
         System.out.println(name + " " + currentValue());
     }
+
+    /**
+     * Hozza tartozo chart hozzaadasa, hogy tudja updatelni az ertekekeit a stock
+     * @param chart Referencia a chartra
+     */
+    public void addChart(StockChart chart){
+        this.chart = chart;
+    }
+
+    /**
+     * Referencia eldobasa a chartrol, hogy ne foglalja feleslegesen a memoriat,
+     * ha nincsen ra szukseg eppen
+     */
+    public void dropChart(){
+        if(this.chart != null){
+            this.chart.dispose();
+            this.chart = null;
+        }
+    }
+
+    /**
+     *Chart getter
+     * @return Referencia a chartra
+     */
+    public StockChart getChart(){ return this.chart; }
 }

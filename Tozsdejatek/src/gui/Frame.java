@@ -1,12 +1,15 @@
 package gui;
 
+import javax.sound.midi.SysexMessage;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 import game.Game;
+import game.Position;
 import game.Stock;
 
 public class Frame extends JFrame {
@@ -15,7 +18,7 @@ public class Frame extends JFrame {
     static boolean gameAdded = false;
     public static DecimalFormat df = new DecimalFormat("0.00");
 
-    protected java.util.Timer timer;
+    protected static java.util.Timer timer;
 
     JPanel north = new JPanel();
     JPanel menuContainer = new JPanel(new FlowLayout(FlowLayout.LEFT,0,0));
@@ -50,6 +53,10 @@ public class Frame extends JFrame {
         name.setFont(new Font("SF", Font.BOLD, 25));
         capital.setFont(new Font("SF", Font.BOLD, 25));
         capital.setForeground(new Color(39,99,40));
+
+        df.setRoundingMode(RoundingMode.HALF_UP);
+
+
       /*  leftHeader.setBackground(new Color(45,45,45));
         rightHeader.setBackground(new Color(45,45,45));
         menuContainer.setBackground(new Color(45,45,45));
@@ -232,6 +239,12 @@ public class Frame extends JFrame {
         stocksPanel.updateUI();
         activePositionsPanel.updateUI();
         closedPositionsPanel.updateUI();
+        if(gameAdded){
+            for (Stock stock:
+                 Frame.game.getStocks()) {
+                stock.dropChart();
+            }
+        }
         Frame.game = game;
         name.setText("Player: " + game.getPlayer().name);
         capital.setText("Capital: " + df.format(game.getPlayer().getCapital()) + "$");
@@ -245,6 +258,22 @@ public class Frame extends JFrame {
             stock.setStockPanel(stockPanel);
             stocksPanel.add(stockPanel);
         }
+
+        for (Position position:
+        game.getPlayer().getOpenPositionsPositions()){
+            PositionPanel positionPanel = new PositionPanel(position, activePositionsPanel);
+            position.addPositionPanel(positionPanel);
+            activePositionsPanel.add(positionPanel);
+        }
+
+        for (Position position:
+                game.getPlayer().getClosedPositions()){
+            PositionPanel positionPanel = new PositionPanel(position, activePositionsPanel);
+            positionPanel.close();
+            position.addPositionPanel(positionPanel);
+            closedPositionsPanel.add(positionPanel);
+        }
+
     }
 
     public static void refreshCapital(){

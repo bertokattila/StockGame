@@ -6,7 +6,7 @@
         <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
       </element>
       <element id="module-output" name="Tozsdejatek" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/src/darcula.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/darcula.jar" path-in-jar="/" />
       <element id="library" level="project" name="darcula" />
     </root>
   </artifact>

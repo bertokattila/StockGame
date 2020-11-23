@@ -48,4 +48,5 @@ public class Game extends TimerTask implements Serializable {
 
     public Player getPlayer(){ return player; }
     public ArrayList<Stock> getStocks(){ return stocks; }
+
 }

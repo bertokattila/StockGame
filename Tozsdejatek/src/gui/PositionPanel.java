@@ -40,6 +40,14 @@ public class PositionPanel extends JPanel {
         change = new JLabel("0%");
 
         profitLabel = new JLabel("0$");
+        double changeValue = 100 * (position.getCurrentValue() / (position.getStartingStockValue() * position.getNumberOfStocks())) - 100;
+        if(changeValue > 0){
+            this.change.setText("+" + Frame.df.format(changeValue) +"%");
+            this.change.setForeground(Color.green);
+        }else {
+            this.change.setText(Frame.df.format(changeValue) +"%");
+            this.change.setForeground(Color.red);
+        }
         profitLabel.setVisible(false);
 
         this.add(id);
