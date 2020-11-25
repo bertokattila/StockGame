@@ -1,6 +1,5 @@
 package gui;
 
-import javax.sound.midi.SysexMessage;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
@@ -55,18 +54,7 @@ public class Frame extends JFrame {
         capital.setForeground(new Color(39,99,40));
 
         df.setRoundingMode(RoundingMode.HALF_UP);
-
-
-      /*  leftHeader.setBackground(new Color(45,45,45));
-        rightHeader.setBackground(new Color(45,45,45));
-        menuContainer.setBackground(new Color(45,45,45));
-        menuBar.setBackground(new Color(45,45,45));
-        gameMenu.setBackground(new Color(45,45,45));*/
-        //pages.setBackground(new Color(45,45,45));
-   /*     stocksPanel.setBackground(new Color(45,45,45));
-        activePositionsPanel.setBackground(new Color(45,45,45));
-        closedPositionsPanel.setBackground(new Color(45,45,45));*/
-
+        this.setIconImage(new ImageIcon("img/icon.png").getImage());
 
         gameMenu.add(newMenuItem);
         gameMenu.add(openMenuItem);
@@ -80,8 +68,6 @@ public class Frame extends JFrame {
         north.setLayout(new BoxLayout(north, BoxLayout.Y_AXIS));
 
         menuContainer.add(menuBar);
-        //leftHeader.setBackground(Color.red);
-        //rightHeader.setBackground(Color.BLUE);
 
         leftHeader.add(name, FlowLayout.LEFT);
         rightHeader.add(capital);
@@ -90,11 +76,6 @@ public class Frame extends JFrame {
         header.add(rightHeader);
         north.add(menuContainer);
         north.add(header);
-
-
-        //stocksPanel.add(new JLabel("Stocks"));
-        //activePositionsPanel.add(new JLabel("Active Positions"));
-        //closedPositionsPanel.add(new JLabel("Closed Positions"));
 
         stocksPanel.setLayout(new BoxLayout(stocksPanel, BoxLayout.Y_AXIS));
         JScrollPane stocksPanelScrollPane = new JScrollPane(stocksPanel);
@@ -130,32 +111,9 @@ public class Frame extends JFrame {
         pages.setTabComponentAt(1, activePositionstabLabel);
         pages.setTabComponentAt(2, closedPositionsTabLabel);
 
-/*        pages.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                System.out.println("Tab: " + pages.getSelectedIndex());
-                if(pages.getSelectedIndex() == 0){
-                    stocksPanel.setVisible(true);
-                    activePositionsPanel.setVisible(false);
-                    closedPositionsPanel.setVisible(false);
-
-                }else if(pages.getSelectedIndex() == 1){
-                    stocksPanel.setVisible(false);
-                    activePositionsPanel.setVisible(false);
-                    closedPositionsPanel.setVisible(false);
-                }else {
-                    stocksPanel.setVisible(false);
-                    activePositionsPanel.setVisible(false);
-                    closedPositionsPanel.setVisible(true);
-                }
-            }
-        });*/
-
-
-
         activePositionsHeader.setPreferredSize(new Dimension(1000, 20));
         activePositionsHeader.setMaximumSize(new Dimension(1000, 20));
         activePositionsHeader.setMinimumSize(new Dimension(1000, 20));
-
 
         closedPositionsHeader.setPreferredSize(new Dimension(1000, 20));
         closedPositionsHeader.setMaximumSize(new Dimension(1000, 20));
@@ -185,7 +143,6 @@ public class Frame extends JFrame {
         changeLabel.setFont(new Font("SF", Font.BOLD, 14));
         activePositionsHeader.add(changeLabel);
 
-
         JLabel idLabelClosedPositionsHeader = new JLabel("Id");
         idLabelClosedPositionsHeader.setFont(new Font("SF", Font.BOLD, 14));
         closedPositionsHeader.add(idLabelClosedPositionsHeader);
@@ -214,7 +171,6 @@ public class Frame extends JFrame {
         profitLabelClosedPositionsHeader.setFont(new Font("SF", Font.BOLD, 14));
         closedPositionsHeader.add(profitLabelClosedPositionsHeader);
 
-        //this.add(pages, BorderLayout.CENTER);
         north.add(pages);
         this.add(north, BorderLayout.NORTH);
 
@@ -269,7 +225,8 @@ public class Frame extends JFrame {
         for (Position position:
                 game.getPlayer().getClosedPositions()){
             PositionPanel positionPanel = new PositionPanel(position, activePositionsPanel);
-            positionPanel.close();
+            positionPanel.close(position.getCurrentValue() > 0);
+
             position.addPositionPanel(positionPanel);
             closedPositionsPanel.add(positionPanel);
         }

@@ -6,6 +6,7 @@ import gui.PositionPanel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Player implements Serializable {
@@ -37,9 +38,14 @@ public class Player implements Serializable {
 
 
     public void refreshPositions(){
-        for (Position position
-        :openPositions){
+        Iterator<Position> iter = openPositions.iterator();
+        while (iter.hasNext()){
+            Position position = iter.next();
             position.refreshValue();
+            if(!position.active){ ///elertektelenedett
+                closedPositions.add(position);
+                iter.remove();
+            }
         }
     }
 
@@ -49,6 +55,8 @@ public class Player implements Serializable {
         closedPositions.add(position);
         openPositions.remove(position);
     }
+
+
 
     public double getCapital() {
         return capital;

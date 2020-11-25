@@ -2,6 +2,9 @@ import com.bulenkov.darcula.DarculaLaf;
 import gui.Frame;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.StandardChartTheme;
+import com.apple.eawt.Application;
+
+
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicLookAndFeel;
 import java.awt.*;
@@ -25,6 +28,10 @@ public class Main {
 
         ///Main window letrehozasa
         Frame frame = new Frame();
+
+        ///Mac platform specifikus
+        Application.getApplication().setDockIconImage(new ImageIcon("img/icon.png").getImage());
+
         frame.setVisible(true);
     }
 }

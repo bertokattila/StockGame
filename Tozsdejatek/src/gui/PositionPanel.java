@@ -40,7 +40,7 @@ public class PositionPanel extends JPanel {
         change = new JLabel("0%");
 
         profitLabel = new JLabel("0$");
-        double changeValue = 100 * (position.getCurrentValue() / (position.getStartingStockValue() * position.getNumberOfStocks())) - 100;
+        double changeValue = 100 * ((position.getCurrentValue() / (position.getStartingStockValue() * position.getNumberOfStocks())) - 1);
         if(changeValue > 0){
             this.change.setText("+" + Frame.df.format(changeValue) +"%");
             this.change.setForeground(Color.green);
@@ -79,12 +79,18 @@ public class PositionPanel extends JPanel {
      * A hozza tartozo pozicio lezarasra kerult, ehhez
      * igazodik a grafikus reprezentacioja
      */
-    public void close(){
+    public void close(boolean sold){
         this.setVisible(false);
         Frame.getClosedPositionsPanel().add(this);
         parentPanel.remove(this);
         this.remove(sellButton);
-        profitLabel.setText(Frame.df.format(position.getCurrentValue() - (position.getStartingStockValue() * position.getNumberOfStocks())) + "$" );
+        if(sold) {
+            profitLabel.setText(Frame.df.format(position.getCurrentValue() - (position.getStartingStockValue() * position.getNumberOfStocks())) + "$");
+        }else {/// elertektelenedes miatt lett lezarva
+            profitLabel.setText(Frame.df.format(-1 * position.getStartingStockValue() * position.getNumberOfStocks()) + "$");
+            change.setText("-100%");
+            currentvalue.setText("0$");
+        }
         this.add(profitLabel);
         profitLabel.setVisible(true);
         this.setVisible(true);

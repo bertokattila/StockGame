@@ -49,7 +49,7 @@ public class Position implements Serializable {
         }
         if(currentValue <= 0){
             active = false;
-            positionPanel.close();
+            positionPanel.close(false);
         }
 
         positionPanel.refresh();
@@ -69,6 +69,6 @@ public class Position implements Serializable {
     public double getNumberOfStocks(){ return numberOfStocks; }
     public void sell(){
         active = false;
-        positionPanel.close();
+        positionPanel.close(true);
     }
 }
