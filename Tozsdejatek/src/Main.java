@@ -1,13 +1,13 @@
+
 import com.bulenkov.darcula.DarculaLaf;
 import gui.Frame;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.StandardChartTheme;
-import com.apple.eawt.Application;
-
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicLookAndFeel;
 import java.awt.*;
+import java.net.URL;
 
 public class Main {
     public static void main(String[] args) throws UnsupportedLookAndFeelException {
@@ -29,9 +29,23 @@ public class Main {
         ///Main window letrehozasa
         Frame frame = new Frame();
 
-        ///Mac platform specifikus
-        Application.getApplication().setDockIconImage(new ImageIcon("img/icon.png").getImage());
+        /*
+         * Maces buildhez szukseg van ezekre, mivel ott mashogyan nem lehet beallitani
+         * ikont az alkalmazasnak
+         *
+         *
+         * import com.apple.eawt.Application;
+         *
+         * main()-be:
+         * Application.getApplication().setDockIconImage(new ImageIcon("img/icon.png").getImage());
+         */
 
+
+        URL iconURL = Main.class.getClassLoader().getResource("icon.png");
+
+        ImageIcon icon = new ImageIcon(iconURL);
+
+        frame.setIconImage(icon.getImage());
         frame.setVisible(true);
     }
 }

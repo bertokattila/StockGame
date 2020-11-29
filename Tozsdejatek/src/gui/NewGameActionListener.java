@@ -13,11 +13,22 @@ import java.util.Timer;
  */
 class NewGameActionListener implements ActionListener {
 
-    private Frame frame;
+    private final Frame frame;
+
+    /**
+     * Konstruktor
+     * @param parentFrame Szulo frame, a JOptionPane-nek van ra szuksege
+     */
     public NewGameActionListener(Frame parentFrame){
         frame = parentFrame;
     }
 
+    /**
+     * Esemeny bekezeleset kezelo fuggveny
+     * Megkerdezi a felhasznalot, hogy milyen neven hozzon letre jatekost
+     * majd letrehozza azt es elinditja a jatekot
+     * @param e Esemeny
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         String playerName;
@@ -25,7 +36,7 @@ class NewGameActionListener implements ActionListener {
         do {
             playerName = (String) JOptionPane.showInputDialog(frame,
                     "Please enter your name ",
-                    "New game.Game",
+                    "New game",
                     JOptionPane.PLAIN_MESSAGE,
                     null,
                     null,
@@ -35,17 +46,17 @@ class NewGameActionListener implements ActionListener {
             }
         } while (!(playerName.length() > 0));
 
-        if(frame.gameAdded) {
-            frame.timer.cancel();
-            frame.timer.purge();
+        if(Frame.gameAdded) {
+            Frame.timer.cancel();
+            Frame.timer.purge();
         }
 
         Player player = new Player(playerName, 5000);
         Game game = new Game(player);
-        frame.addGame(game);
+        Frame.addGame(game);
 
-        frame.timer = new Timer();
-        frame.timer.scheduleAtFixedRate(game, 0, 3000);
+        Frame.timer = new Timer();
+        Frame.timer.scheduleAtFixedRate(game, 3000, 3000);
     }
 
 }

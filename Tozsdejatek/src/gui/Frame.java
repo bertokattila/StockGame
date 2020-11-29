@@ -13,48 +13,131 @@ import game.Stock;
 
 public class Frame extends JFrame {
 
+    /**
+     * Referencia az aktualis jatekmenet objektumara
+     */
     private static Game game;
+
+    /**
+     * Indikalja, hogy be van-e mar toltve jatekmenet
+     */
     static boolean gameAdded = false;
+
+    /**
+     * Ket tizedes jegyre kerekito objektum
+     */
     public static DecimalFormat df = new DecimalFormat("0.00");
 
+    /**
+     * Timer, ami megfelelo idokozonkent lepteti a game-objektumot
+     */
     protected static java.util.Timer timer;
 
-    JPanel north = new JPanel();
-    JPanel menuContainer = new JPanel(new FlowLayout(FlowLayout.LEFT,0,0));
-    JPanel header = new JPanel(new GridLayout());
-    JPanel leftHeader = new JPanel(new FlowLayout(FlowLayout.LEFT));
-    JPanel rightHeader = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+    /**
+     * Jpanel container, ami arra utal, hogy a tartalma
+     * majd a frame Borderlayout-janak a north szegmensebe kerul
+     */
+    private static final JPanel north = new JPanel();
 
-    private static JPanel stocksPanel = new JPanel();
-    public static JPanel activePositionsPanel = new JPanel();
-    private static JPanel closedPositionsHeader = new JPanel(new GridLayout(0,7));
-    private static JPanel activePositionsHeader = new JPanel(new GridLayout(0,7));
+    /**
+     * A Menut tarttalmazo container panel
+     */
+    private static final JPanel menuContainer = new JPanel(new FlowLayout(FlowLayout.LEFT,0,0));
+
+    /**
+     * Fejlecet tartalmazo panel
+     */
+    private static final JPanel header = new JPanel(new GridLayout());
+
+    /**
+     * A fejlec bal oldali tartalmat (Player name) tartalmazo panel
+     */
+    private static final JPanel leftHeader = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+    /**
+     * A fejlec jobb oldali tartalmat (Elerheto toke) tartalmazo panel
+     */
+    private static final JPanel rightHeader = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+
+    /**
+     * Panem ami a reszvenyek paneljeti tartalmazza
+     */
+    private static final JPanel stocksPanel = new JPanel();
+
+    /**
+     * Panel, ami az aktiv poziciokat tartalmazza
+     */
+    public static final JPanel activePositionsPanel = new JPanel();
+
+    /**
+     * Panel, ami a lezart poziciokat tartalmazza
+     */
     private static final JPanel closedPositionsPanel = new JPanel();
-    JTabbedPane pages = new JTabbedPane();
 
+    /**
+     * Fejlec, ami segitsegevel egyertelmu, hogy a lezarult poziciok egyes attributumai mit jelentenek
+     */
+    private static final JPanel closedPositionsHeader = new JPanel(new GridLayout(0,8));
 
+    /**
+     * Fejlec, ami segitsegevel egyertelmu, hogy az aktiv poziciok egyes attributumai mit jelentenek
+     */
+    private static final JPanel activePositionsHeader = new JPanel(new GridLayout(0,8));
+
+    /**
+     * Lapozhato oldalakat tartalmazo Pane
+     * Segitsegevel lehet valtani a reszvenyek, aktiv poziciok es lezarult poziciok kozott
+     */
+    private static final JTabbedPane pages = new JTabbedPane();
+
+    /**
+     * Az aktualis jatekos nevet tartalmazo label
+     */
     private static JLabel name;
-    static JLabel capital;
 
-    JMenuBar menuBar = new JMenuBar();
-    JMenu  gameMenu = new JMenu("Game");
+    /**
+     * Az aktualis elerheto toket megado label
+     */
+    private static JLabel capital;
 
-    JMenuItem  newMenuItem = new JMenuItem("New");
-    JMenuItem  openMenuItem = new JMenuItem("Open");
-    JMenuItem  saveMenuItem = new JMenuItem("Save");
+    /**
+     * Menubar, ami tartalmazza a menut
+     */
+    private static final JMenuBar menuBar = new JMenuBar();
 
+    /**
+     * Jatek menu
+     */
+    private static final JMenu  gameMenu = new JMenu("Game");
 
+    /**
+     * Menupont, amivel uj jatekot lehet kezdeni
+     */
+    private static final JMenuItem  newMenuItem = new JMenuItem("New game");
+
+    /**
+     * Menupont, amivel meg lehet nyitni mentett jatekokat
+     */
+    private static final JMenuItem  openMenuItem = new JMenuItem("Open game");
+
+    /**
+     * Menupont, amivel el lehet menteni az aktualis jatekot
+     */
+    private static final JMenuItem  saveMenuItem = new JMenuItem("Save game");
+
+    /**
+     * Konstruktor, ami inicializalja az alapveto gui-elemeket, szerkezetileg osszerakja oket,
+     * beallitja a megfelelo parametereket, majd vegul megjeleniti az ablakot
+     */
     public Frame(){
-
+        super("Stock game");
         this.setMinimumSize(new Dimension(1050, 510));
         name = new JLabel("Player: ");
         capital = new JLabel("Capital: ");
         name.setFont(new Font("SF", Font.BOLD, 25));
         capital.setFont(new Font("SF", Font.BOLD, 25));
-        capital.setForeground(new Color(39,99,40));
 
         df.setRoundingMode(RoundingMode.HALF_UP);
-        this.setIconImage(new ImageIcon("img/icon.png").getImage());
 
         gameMenu.add(newMenuItem);
         gameMenu.add(openMenuItem);
@@ -131,6 +214,10 @@ public class Frame extends JFrame {
         typeLabel.setFont(new Font("SF", Font.BOLD, 14));
         activePositionsHeader.add(typeLabel);
 
+        JLabel leverageLabel = new JLabel("Leverage");
+        leverageLabel.setFont(new Font("SF", Font.BOLD, 14));
+        activePositionsHeader.add(leverageLabel);
+
         JLabel startingValueLabel = new JLabel("Starting value");
         startingValueLabel.setFont(new Font("SF", Font.BOLD, 14));
         activePositionsHeader.add(startingValueLabel);
@@ -155,6 +242,10 @@ public class Frame extends JFrame {
         typeLabelClosedPositionsHeader.setFont(new Font("SF", Font.BOLD, 14));
         closedPositionsHeader.add(typeLabelClosedPositionsHeader);
 
+        JLabel leverageLabelClosedPositionsHeader = new JLabel("Leverage");
+        leverageLabelClosedPositionsHeader.setFont(new Font("SF", Font.BOLD, 14));
+        closedPositionsHeader.add(leverageLabelClosedPositionsHeader);
+
         JLabel startingValueLabelClosedPositionsHeader = new JLabel("Starting value");
         startingValueLabelClosedPositionsHeader.setFont(new Font("SF", Font.BOLD, 14));
         closedPositionsHeader.add(startingValueLabelClosedPositionsHeader);
@@ -178,6 +269,10 @@ public class Frame extends JFrame {
 
     }
 
+    /**
+     * Visszaadja az aktualis jatekmenetet
+     * @return Jatekmenet (game objektum)
+     */
     public static Game getGame(){
         return game;
     }
@@ -186,7 +281,7 @@ public class Frame extends JFrame {
      * Jatek hozzaadasa, lehet uj jatek vagy betoltott
      * @param game jatek objektum
      */
-    public static void addGame(Game game){
+    public static void addGame(Game game) {
         stocksPanel.removeAll();
         activePositionsPanel.removeAll();
         closedPositionsPanel.removeAll();
@@ -202,7 +297,7 @@ public class Frame extends JFrame {
             }
         }
         Frame.game = game;
-        name.setText("Player: " + game.getPlayer().name);
+        name.setText("Player: " + game.getPlayer().getName());
         capital.setText("Capital: " + df.format(game.getPlayer().getCapital()) + "$");
         gameAdded = true;
         /*
@@ -216,7 +311,7 @@ public class Frame extends JFrame {
         }
 
         for (Position position:
-        game.getPlayer().getOpenPositionsPositions()){
+        game.getPlayer().getOpenPositions()){
             PositionPanel positionPanel = new PositionPanel(position, activePositionsPanel);
             position.addPositionPanel(positionPanel);
             activePositionsPanel.add(positionPanel);
@@ -231,12 +326,20 @@ public class Frame extends JFrame {
             closedPositionsPanel.add(positionPanel);
         }
 
+
     }
 
+    /**
+     * Frissiti a megjelenitett toke erteket
+     */
     public static void refreshCapital(){
         capital.setText("Capital:" + Frame.df.format(game.getPlayer().getCapital()) + "$");
     }
 
+    /**
+     * Visszaadja a lezart poziciokat tartalmazo panelt
+     * @return lezart poziciokat tartalmazo panel
+     */
     public static JPanel getClosedPositionsPanel(){
         return closedPositionsPanel;
     }

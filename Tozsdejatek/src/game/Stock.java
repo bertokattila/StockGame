@@ -1,6 +1,5 @@
 package game;
 
-import gui.Frame;
 import gui.StockChart;
 import gui.StockPanel;
 
@@ -10,11 +9,20 @@ import java.util.Random;
 
 public class Stock implements Serializable {
 
+    /**
+     * A reszveny neve
+     */
     private final String name;
 
+    /**
+     * Az utolso sorsolt valtozas (aranyszam)
+     */
     private double lastChange = 0;
 
-    /// utolso ertek az aktualis
+    /**
+     * A reszveny korabbi ertekeit tarolo lista,
+     * a legutolso ertek mindig a jelenlegi
+     */
     private final ArrayList<Double> valueHistory = new ArrayList<>();
 
     ///referencia a stockPanelre, ami megjeleniti ot
@@ -39,6 +47,10 @@ public class Stock implements Serializable {
      */
     public double currentValue(){  return valueHistory.get(valueHistory.size() - 1); }
 
+    /**
+     * Getter az korabbi ertekek listajara
+     * @return Lista a korabbi ertekekrol
+     */
     public ArrayList<Double> getValueHistory() {
         return valueHistory;
     }
@@ -54,13 +66,30 @@ public class Stock implements Serializable {
     }
 
     /**
+     * Az erteke megadja, hogy hany kovetkezo erteknel kapjon boostot
+     * ha nem lenne boostolas, akkor hosszabb jatekoknal egy ido utan
+     * ekertektelenednenek a reszvenyek
+     */
+    private int valueBoost = 0;
+
+    /**
      * Uj erteket general a reszvenynek
      */
-    void newValue(){
+    public void newValue(){
         Random random = new Random();
 
         /// valtozas: egyenletes eloszlas -0.1 es 0.1 kozott
         lastChange = ((random.nextDouble() * 0.2) - 0.1);
+
+        if(currentValue() < 3 && valueBoost == 0){
+            valueBoost = 30;
+
+        }
+        if(valueBoost > 0){
+            valueBoost--;
+            lastChange = lastChange + 0.1;
+        }
+
         valueHistory.add(currentValue() + (currentValue() * lastChange));
         if(stockPanel != null){
             stockPanel.refreshValue(currentValue());
@@ -68,8 +97,6 @@ public class Stock implements Serializable {
         if(chart != null){
             chart.addNewValue(currentValue(), valueHistory.size());
         }
-
-        System.out.println(name + " " + currentValue());
     }
 
     /**

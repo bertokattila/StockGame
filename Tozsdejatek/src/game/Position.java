@@ -2,20 +2,63 @@ package game;
 
 import gui.PositionPanel;
 
-import javax.swing.*;
 import java.io.Serializable;
 
 public class Position implements Serializable {
+    /**
+     * Pozicio azonositoja, ami pozitiv egesz szam
+     * a jatekos a segitsegevel konnyebben meg tudja kulonboztetni a
+     * pozicioit, mas (funkcionalis) szerepe nincsen
+     */
     private final int id;
+
+    /**
+     * Referencia a reszvenyre, amibol letre lett hozva
+     * ennek az arfolyamvaltozasat kell kovetnie a parametereinek megfeleloen
+     */
     private final Stock stock;
+
+    /**
+     * Pozicio tipusa
+     */
     private final PositionType type;
+
+    /**
+     * A reszvenynek az erteke abban az idopontban, amikor letre lett hozva
+     * a pozicio belole
+     */
     private final double startingStockValue;
+
+    /**
+     * Az aktualis erteke a pozicionak
+     */
     private double currentValue;
+
+    /**
+     * Megadja, hogy hany darab reszvenybol all a pozicio
+     */
     private final double numberOfStocks;
+
+    /**
+     * A tokeattet merteket tarolja, amennyiben nincsen, az erteke 1
+     */
     private final double leverage;
+
+    /**
+     * Az eladott, illetve elertektelenedett poziciok nem aktivak, a tobbi igen
+     * Csak az aktiv poziciok allapota valtozik
+     */
     boolean active = true;
+
+    /**
+     * Referencia a poziciot reprezentalo panel-re, ami gui elem, igy
+     * nem szukseges szerializalni menteskor, emiatt transient
+     */
     private transient PositionPanel positionPanel;
 
+    /**
+     * A pozicio ket fele lehetseges tipusat reprezentalo enum
+     */
     public enum PositionType{
         SHORT,
         LONG
@@ -23,7 +66,7 @@ public class Position implements Serializable {
 
     /**
      * Uj pozicio letrehozasa egy reszvenybol
-     * @param id
+     * @param id A pozicio id-ja
      * @param stock Reszveny, amibol letrejon a pozicio
      * @param numberOfStocks Reszveny darabszam
      * @param type Pozicio tipusa
@@ -39,27 +82,43 @@ public class Position implements Serializable {
         this.numberOfStocks = numberOfStocks;
     }
 
-    void refreshValue(){
+    /**
+     * Hozzaigazitja a reszveny aktualis ertekehez a pozicio erteket es allapotat a parameterei alapjan
+     */
+    public void refreshValue(){
         if(type == PositionType.LONG){
-            /// sima reszveny vasarlas
-            currentValue = numberOfStocks * stock.currentValue();
+            /// reszveny vasarlas
+            currentValue = startingStockValue * numberOfStocks + numberOfStocks * leverage * (stock.currentValue() - startingStockValue);
         }else {
-            /// sima shortolas
-            currentValue =  startingStockValue * numberOfStocks + numberOfStocks * (startingStockValue - stock.currentValue());
+            /// shortolas
+            currentValue =  startingStockValue * numberOfStocks + numberOfStocks * leverage * (startingStockValue - stock.currentValue());
         }
         if(currentValue <= 0){
             active = false;
             positionPanel.close(false);
+        }else {
+            positionPanel.refresh();
         }
 
-        positionPanel.refresh();
-
-        System.out.println(currentValue);
     }
 
+    /**
+     * Az ot reprezentalo hozzaadasa, amennyiben elertektelenedik a pozocio szolnia kell neki
+     * @param positionPanel Referencia a PositionPanel-re
+     */
     public void addPositionPanel(PositionPanel positionPanel){
         this.positionPanel = positionPanel;
     }
+
+    /**
+     * A jatekos hivja meg, ha ugy dont, hogy eladja
+     */
+    public void sell(){
+        active = false;
+        positionPanel.close(true);
+    }
+
+    ///innentol csak getter fuggvenyek vannak, ezeket nem kommentalom egyenkent
 
     public int getId(){ return id; }
     public Stock getStock(){ return stock; }
@@ -67,8 +126,7 @@ public class Position implements Serializable {
     public double getCurrentValue(){ return currentValue; }
     public double getStartingStockValue(){ return startingStockValue; }
     public double getNumberOfStocks(){ return numberOfStocks; }
-    public void sell(){
-        active = false;
-        positionPanel.close(true);
-    }
+    public double getLeverage(){ return leverage; }
+
+
 }

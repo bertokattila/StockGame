@@ -6,26 +6,56 @@ import javax.swing.*;
 import java.awt.*;
 
 public class PositionPanel extends JPanel {
+    /**
+     * A pozicio, amit reprezental grafikusaN
+     */
     private final Position position;
-    JLabel id;
-    JLabel stockName;
-    JLabel type;
-    JLabel startingValue;
-    JLabel currentvalue;
-    JLabel change;
-    JButton sellButton = new JButton("Sell");
-    JLabel profitLabel;
-    JPanel parentPanel;
+
+    /**
+     * A pozicio id-jat abrazolo label
+     */
+    protected final JLabel id;
+
+    /**
+     * A reszveny nevet abrazolo label, amibol a pozicio letrejott
+     */
+    protected final JLabel stockName;
+
+    /**
+     *A pozicio tipusat abrazolo label
+     * SHORT vagy LONG
+     */
+    protected final JLabel type;
+
+    /**
+     * A pozicio aktualis erteket mutatja, dollarban
+     */
+    protected final JLabel currentvalue;
+
+    /**
+     * Szazalekban megjeleniti a pozicio ertekenek valtozasat
+     */
+    protected final JLabel change;
+
+    /**
+     * Gomb amivel el lehet adni a poziciot
+     * csak akkor lathato, amikor aktiv allapotban van a pozicio,
+     * hiszen csak azok eladhatoak
+     */
+    private final JButton sellButton = new JButton("Sell");
+    protected final JLabel profitLabel;
+    private final JPanel parentPanel;
 
     /**
      * Konstruktor
+     * Osszerakja a pozicio adataibol az azt reprezentalo panelt
      * @param position a pozicio, amit reprezental
      * @param parentPanel a panel, ami tartalmazza ot
      */
     public PositionPanel(Position position, JPanel parentPanel){
         this.position = position;
         this.parentPanel = parentPanel;
-        this.setLayout(new GridLayout(0,7));
+        this.setLayout(new GridLayout(0,8));
         this.setPreferredSize(new Dimension(1000, 50));
         this.setMaximumSize(new Dimension(1000, 50));
         this.setMinimumSize(new Dimension(1000, 50));
@@ -35,7 +65,8 @@ public class PositionPanel extends JPanel {
         id = new JLabel(String.valueOf(position.getId()));
         stockName = new JLabel(position.getStock().getName());
         type = new JLabel(position.getType().name());
-        startingValue = new JLabel(Frame.df.format(position.getStartingStockValue() * position.getNumberOfStocks()) + "$");
+        JLabel leverage = new JLabel(Frame.df.format(position.getLeverage() * 100) + "%");
+        JLabel startingValue = new JLabel(Frame.df.format(position.getStartingStockValue() * position.getNumberOfStocks()) + "$");
         currentvalue = new JLabel(Frame.df.format(position.getCurrentValue()) + "$");
         change = new JLabel("0%");
 
@@ -53,6 +84,7 @@ public class PositionPanel extends JPanel {
         this.add(id);
         this.add(stockName);
         this.add(type);
+        this.add(leverage);
         this.add(startingValue);
         this.add(currentvalue);
         this.add(change);
@@ -61,7 +93,10 @@ public class PositionPanel extends JPanel {
     }
 
     /**
-     * Megjelenites frissitese az aktualis adatokkal
+     * Megjelenites frissitese az aktualis adatokkal,
+     * gondoskodik arrol, hogy ha tobbet er a reszveny a kezdeti
+     * ertekenel, akkor a szazalekos valtozas zoldben jelenik meg,
+     * egyebkent pirosban
      */
     public void refresh(){
         currentvalue.setText(Frame.df.format(position.getCurrentValue()) + "$");
@@ -77,7 +112,8 @@ public class PositionPanel extends JPanel {
 
     /**
      * A hozza tartozo pozicio lezarasra kerult, ehhez
-     * igazodik a grafikus reprezentacioja
+     * igazitja a grafikus reprezentaciot:
+     * pl.: eltunik a Sell button, stb.
      */
     public void close(boolean sold){
         this.setVisible(false);
@@ -94,6 +130,5 @@ public class PositionPanel extends JPanel {
         this.add(profitLabel);
         profitLabel.setVisible(true);
         this.setVisible(true);
-        
     }
 }

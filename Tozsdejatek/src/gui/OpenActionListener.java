@@ -1,7 +1,6 @@
 package gui;
 
 import game.Game;
-import game.Player;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -11,11 +10,27 @@ import java.io.*;
 import java.util.Timer;
 
 public class OpenActionListener implements ActionListener {
+    /**
+     * Jmenuben levo Open button,
+     * amire majd a showOpenDialog hivatkozik
+     */
     private final JMenuItem openButton;
 
+    /**
+     * Konstruktor
+     * @param openButton Open button
+     */
     public OpenActionListener(JMenuItem openButton){
         this.openButton = openButton;
     }
+
+    /**
+     * Esemeny bekezeleset kezelo fuggveny
+     * megjeleniti a fajlrendszert egy ablakban, aminek segitsegevel
+     * a felhaasznalo kivalaszthatja a mentett allapotot, amit folytatni szeretne
+     * gondoskodik arrol, hogy csak megfelelo tartalommal rendelkezo .ser fajlok toltodhetnek be
+     * @param e Esemeny
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         JFileChooser fileChooser = new JFileChooser();

@@ -1,7 +1,5 @@
 package gui;
 
-import game.Game;
-
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
@@ -9,11 +7,27 @@ import java.awt.event.ActionListener;
 import java.io.*;
 
 public class SaveActionListener implements ActionListener {
+
+    /**
+     * JMenuben levo Save button
+     */
     private final JMenuItem saveButton;
 
+    /**
+     * Konstruktor
+     * @param saveButton A jmenuben levo button
+     */
     public SaveActionListener(JMenuItem saveButton){
         this.saveButton = saveButton;
     }
+
+    /**
+     * Esemeny bekezeleset kezelo fuggveny
+     * Ha van betoltve aktualis jatek, akkor azt szerializalja egy .ser
+     * kiterjesztesu fajlba, aminek alapertelmezett neve  <Player name>.ser,
+     * de ezt modosithatja a felhasznalo barmire es kivalaszthatja a mentes helyet is
+     * @param e Esemeny
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if(Frame.getGame() != null) {
@@ -21,7 +35,7 @@ public class SaveActionListener implements ActionListener {
             fileChooser.setMultiSelectionEnabled(false);
             FileNameExtensionFilter filter = new FileNameExtensionFilter(".ser files", "ser");
             fileChooser.setFileFilter(filter);
-            fileChooser.setSelectedFile(new File(Frame.getGame().getPlayer().name + ".ser"));
+            fileChooser.setSelectedFile(new File(Frame.getGame().getPlayer().getName() + ".ser"));
 
             if (fileChooser.showSaveDialog(saveButton) == JFileChooser.APPROVE_OPTION) {
                 File file = fileChooser.getSelectedFile();
