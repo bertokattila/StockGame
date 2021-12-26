@@ -26,81 +26,77 @@ Select the **New game** option in the **Game** menu to get a pup-up where you ca
 
 Click on **OK** and the game starts.
 
-### 2. **Grafikonok megjelenítése** 
+### 2. **Displaying charts** 
 
-Minden részvény grafikonja megjeleníthető a hozzá tartozó **Show chart** gombbal. 
+The graph of each stock can be displayed with the corresponding **Show chart** button.
+
 <img width="1162" alt="Screenshot 2021-12-26 at 15 36 16" src="https://user-images.githubusercontent.com/22593928/147411366-7779cc5f-fea6-45cf-bd3f-eb6a83723a1b.png">
 
-Ekkor megjelenik a hozzá tartozó grafikon új ablakban. Minden részvény grafikonja külön ablakban jelenik meg és az idő előrehaladtával folyamatosan frissül. A **Show chart** gomb újabb megnyomásával a fókusz rákerül a grafikonjának az ablakára. Ezek az ablakok az átméretezés hatására nyúlni képesek, így létrehozható egy egyedi nézet, ideális képernyőkihasználtsággal, akár több kijelző esetén is.  
+The corresponding graph will appear in a new window. The graph of each stock is displayed in a separate window and they're being constantly updated. Pressing the **Show chart** button again will bring the focus back to the graph of that stock. These windows can be resized, creating a custom view with ideal screen usage, even for multiple displays.
 
-A JFreeChart ad néhány további hasznos funkciót: bele lehet nagyítani a grafikonokba, de akár PNG képet is lehet létrehozni belőlük stb. Ezek a funkciók a grafikonra jobb klikkelve érhetők el. 
+JFreeChart provides some additional useful features: you can zoom in on graphs, but you can even create a PNG images of them, and so on. You can access these functions by right-clicking on the graph.
 <img width="672" alt="Screenshot 2egt021-12-26 at 15 54 19" src="https://user-images.githubusercontent.com/22593928/147412138-995ad041-01ab-4d98-963b-8c42332d9836.png">
 
-3. **Pozíció létrehozása** 
+### 3. **Creating a position** 
 
-A **Stock** fülre kell váltani a részvények megjelenítéséhez. Amennyiben a játékos arra szeretne spekulálni, hogy az adott részvény árfolyama nőni fog, a **Long** gombot kell választania, amennyiben a csökkenésre spekulálna, a **Short** gombot. 
+If you speculate that the price of a particular stock will increase, you must choose the **Long** button, if you speculate for decrease, choose the **Short** button.
 
-A megjelenő ablakban kell megadni az összeget, amennyiért a pozíciót létre szeretné hozni. Ha ez esetleg meghaladná a játékos rendelkezésre álló tőkéjét, akkor a program természetesen nem engedi azt létrehozni. Ha egy érvényes érték lett megadva, felugrik egy következő ablak, amiben a használni kívánt tőkeáttétet lehet megadni.
+In the window that appears, enter the amount of money you'd like to use to create the position. If this amount exceeds the available capital, the program will, of course, not allow the transaction, otherwise the following window will pop up in which you can enter the leverage you want to use:
 
 <img width="408" alt="Screenshot 2021-12-26 at 16 05 34" src="https://user-images.githubusercontent.com/22593928/147412460-30b1356d-ee5d-4c9b-bba3-790e3a6547fe.png"><img width="480" alt="Screenshot 2021-12-26 at 16 17 25" src="https://user-images.githubusercontent.com/22593928/147412463-a962b0ef-333b-4f24-8b1b-448fd8a5ec5f.png">
 
+The created position can now be viewed on the **Active Positions** page.
 
-A létrehozott pozíciót innentől az **Active Positions** oldalon lehet megtekinteni. 
+### 4. **Selling a position** 
 
-4. **Pozíció eladása** 
-
-Az **Active Positions** oldalon minden pozícióhoz tartozik egy **Sell** gomb, amivel el lehet adni. 
+On the **Active Positions** page, each position has a **Sell** button that can be used to sell.
 
 <img width="1162" alt="Screenshot 2021-12-26 at 16 23 04" src="https://user-images.githubusercontent.com/22593928/147412600-01b8222b-ca64-4cdd-a3fd-c8d96c1a109b.png">
 
+The **Current value** parameter shows how much money you would receive if you sold the position at that moment.
 
-A **Current value** paraméter mutatja, hogy ha az adott pillanatban eladná a játékos a pozícióját, akkor mennyi pénzt kapna érte. 
+Certain types of positions may loose their whole value. This includes all SHORT type positions as well as any position with leverage greater than 100%. If this scenario occurs, the position gets automatically closed and moved to the **Closed positions** page.
 
-Bizonyos típusú pozíciók maguktól is elértéktelenedhetnek. Ilyen az összes SHORT típusú pozíció, valamint bármilyen (100%-nál nagyobb) tőkeáttéttel rendelkező pozíció. Ebben az esetben automatikusan lezáródik és átkerül a **Closed** **positions** oldalra.
+### 5. **Save game** 
 
-5. **Játék elmentése** Mentéshez a **Game** menüben a **Save game** opciót kell választani, ekkor mejelenik az alábbi ablak:
+To save, select **Save game** option in the **Game** menu and the following window will appear:
 
 <img width="654" alt="Screenshot 2021-12-26 at 16 28 02" src="https://user-images.githubusercontent.com/22593928/147412713-b1585e20-57a0-47e0-ad19-f41f045d3971.png">
 
-Itt kiválaszthatja a felhasználó a mentés helyét, valamint megadhatja a fájl nevét, ami alapértelmetetten a játékos neve. A kiterjesztés mindéképpen .ser, mást nem enged menteni a program. És dob egy warningot: 
+Here you can select the saving location as well as enter the file name, which is the player's name by default. The extension must be .ser, otherwise the game throws a warning:
+
 <img width="486" alt="Screenshot 2021-12-26 at 16 29 00" src="https://user-images.githubusercontent.com/22593928/147412751-87cdf0b1-c527-4889-9681-a73b733f1696.png">
 
-6. **Mentett játék betöltése** 
+### 6. **Opening a saved game** 
 
-A mentéshez hasonlóan működik: A **Game** menüben kell kiválasztani az **Open game** opciót, aminek hatására megnyílik a következő ablak: 
+It works like saving: In the **Game** menu, select **Open game**, which will open the following window:
 
 <img width="654" alt="Screenshot 2021-12-26 at 17 06 36" src="https://user-images.githubusercontent.com/22593928/147413785-7dc2aacd-65ab-432e-83f5-cf742fcbf8cb.png">
 
-Itt .ser kiterjesztésű fájlokat tölthet be a felhasználó, de csak olyanokat, amiket ez a program hozott létre. Ellenkező esetben a betöltés sikertelen lesz és az alábbi hibaüzenet fog látszódni: 
+Here you can load files with a .ser extension, but only those created by this game. Otherwise, the load will fail and you will receive the following error message:
 
 <img width="409" alt="Screenshot 2021-12-26 at 17 18 10" src="https://user-images.githubusercontent.com/22593928/147414052-98f41c16-3690-4630-8a98-fddc66a11b13.png">
 
-**Felhasznált külső könyvtárak és fordítás** 
+**External libraries used** 
 
-A project **lib** mappájában találhatóak, szükség van rájuk a fordításhoz. 
+- [JFreeChart](https://www.jfree.org/jfreechart/)
+- [Darcula look and feel](https://github.com/bulenkov/Darcula)
 
-- JFreeChart 
-- Dracula look and feel 
+Tesing: 
 
-Teszteléshez: 
+- [JUnit](https://junit.org/junit5)
 
-- Junit (és a neki szükséges Hamcrest) 
+**The icon** 
 
-A fejlesztést IntelliJ-ben végeztem, de teszteltem a kari felhőben is, Eclipse-ben is lefordul. Mellékelek egy futtatható jar fájlt is. A fordításkor a Dracula dob néhány warningot, ennek utána olvastam: ismert probléma amire még nincsen megoldás, de szerencsére nem befolyásol semmit, így figyelmen kívül lehet hagyni. 
+I created it by modifying one of the free icons on [Flaticon](https://www.flaticon.com). It is located in the **img** folder of the project.
 
-**Az ikon** 
+**Classes, data structures** 
 
-A flaticon.com egyik ingyenes ikonját módosítva készítettem el. A projekt **img** mappájában található. 
-
-
-
-**Osztályok, adatszerkezetek** 
-
-Az osztályokat 3 package-be szerveztem szerepük szerint. Mindegyik osztály (a Main) kivételével tagja valamelyik package-nek. Az osztályok belsejének (attribútumok, függvények) leírása a forráskódban szerepel JavaDoc kommentként. 
+I organized the classes into 3 packages according to their role. Each class (except Main) is a member of a package. The description of the classes is included in the source code as JavaDoc comments.
 
 **Main** 
 
-Létrehozza és megjeleníti a fő ablakot. 
+Creates and displays the main window. 
 
 - **Game package** 
 - **Game** 
