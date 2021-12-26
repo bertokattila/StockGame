@@ -6,7 +6,7 @@ This was my homework for a third semester university course object-oriented prog
 
 <img width="1920" alt="Screenshot 2021-12-26 at 15 50 09" src="https://user-images.githubusercontent.com/22593928/147411736-3136ad57-96ea-4eeb-a728-e9c9dad34f88.png">
 
-Az oszálydiagramokat a konzultáción megbeszéltek szerint két részre bontottam, hogy átlátható maradjon. Az első osztálydiagram ábrázolja a business-logic, a második pedig a GUI- osztályokat.
+As discussed in the consultation I separated the class diagram into two parts to keep it simple. The first diagram shows the business logic classes, while the second shows the user interface classes.
 
 <img width="1636" alt="Screenshot 2021-12-26 at 17 43 05 copy" src="https://user-images.githubusercontent.com/22593928/147415483-ab534a36-d34c-4167-b483-925c3880723b.png">
  
@@ -14,18 +14,19 @@ Az oszálydiagramokat a konzultáción megbeszéltek szerint két részre bontot
 
 ## User manual and screenshots
 
-1. **Új játék létrehozása** 
+### 1. **Creating a new game** 
 
-A program elindítása után az alábbi ablak látszódik: 
+After launching the game you should see something like this: 
 
 <img width="1162" alt="Screenshot 2021-12-26 at 15 32 14" src="https://user-images.githubusercontent.com/22593928/147411227-1c198e94-01a1-47fc-aece-b5005300aa82.png">
 
-A **Game** menüben a **New game** feliratra kattintva a program megkérdezi a felhasználót, hogy mi legyen a játékos neve.
+Select the **New game** option in the **Game** menu to get a pup-up where you can give a nickname.
 
 <img width="408" alt="Screenshot 2021-12-26 at 15 32 57" src="https://user-images.githubusercontent.com/22593928/147411270-e659c23b-51c8-4e1b-867e-0e232ddf3c28.png">
-Miután ezt megadta, elindul a játék.
 
-2. **Grafikonok megjelenítése** 
+Click on **OK** and the game starts.
+
+### 2. **Grafikonok megjelenítése** 
 
 Minden részvény grafikonja megjeleníthető a hozzá tartozó **Show chart** gombbal. 
 <img width="1162" alt="Screenshot 2021-12-26 at 15 36 16" src="https://user-images.githubusercontent.com/22593928/147411366-7779cc5f-fea6-45cf-bd3f-eb6a83723a1b.png">
