@@ -63,7 +63,7 @@ To save, select **Save game** option in the **Game** menu and the following wind
 
 <img width="654" alt="Screenshot 2021-12-26 at 16 28 02" src="https://user-images.githubusercontent.com/22593928/147412713-b1585e20-57a0-47e0-ad19-f41f045d3971.png">
 
-Here you can select the saving location as well as enter the file name, which is the player's name by default. The extension must be .ser, otherwise the game throws a warning:
+Here you can select the saving location as well as enter the file name, which is the player's name by default. The extension must be .ser otherwise the game throws a warning:
 
 <img width="486" alt="Screenshot 2021-12-26 at 16 29 00" src="https://user-images.githubusercontent.com/22593928/147412751-87cdf0b1-c527-4889-9681-a73b733f1696.png">
 
@@ -77,20 +77,22 @@ Here you can load files with a .ser extension, but only those created by this ga
 
 <img width="409" alt="Screenshot 2021-12-26 at 17 18 10" src="https://user-images.githubusercontent.com/22593928/147414052-98f41c16-3690-4630-8a98-fddc66a11b13.png">
 
-**External libraries used** 
+## **External libraries used** 
 
 - [JFreeChart](https://www.jfree.org/jfreechart/)
 - [Darcula look and feel](https://github.com/bulenkov/Darcula)
 
-Tesing: 
+ Tesing: 
 
 - [JUnit](https://junit.org/junit5)
 
-**The icon** 
+## **The icon** 
 
 I created it by modifying one of the free icons on [Flaticon](https://www.flaticon.com). It is located in the **img** folder of the project.
 
-**Classes, data structures** 
+<img width="90" alt="Screenshot 2021-12-26 at 17 18 10" src="https://user-images.githubusercontent.com/22593928/147414216-3f0a0a99-4232-43f7-b500-123d3916f310.png">
+
+## **Classes, data structures** 
 
 I organized the classes into 3 packages according to their role. Each class (except Main) is a member of a package. The description of the classes is included in the source code as JavaDoc comments.
 
@@ -98,107 +100,85 @@ I organized the classes into 3 packages according to their role. Each class (exc
 
 Creates and displays the main window. 
 
-- **Game package** 
+### **Game package** 
 - **Game** 
 
-Egy jétékmenetet reprezentál, tárolja a részvényeket, azok értékelőzményeit, valamint a játékmenethez tartozó játékost (Player). Legfontosabb szerepe, hogy lehetővé teszi, játékmenetek “csatolását” a gui-hoz, aminek a mentés és mentett játék betöltésénel van szerepe. (Lásd. Mentések fejezet) 
+It represents a gameplay, stores the shares, their valuation history, and the player associated with the gameplay. Its most important role is to allow gameplays to be “attached” to the gui. This plays an importatnt a role in loading and saving saved games. (See **Save game** section)
 
-**Player** 
+- **Player** 
 
-Egy játékost reprezentál, tárolja annak nevét, tőkéjét, aktív és már lezárt pozícióit. 
+Represents a player, stores its name, capital, active and closed positions.
 
 - **Stock** 
 
-Egy részvényt reprezentál, tárolja a nevét értékét, és korábbi értékeit (így grafikonon lehet ábrázolni) 
+Represents a stock, stores its name, value, and previous values.
 
 - **Position** 
 
-Egy pozíciót reprezentál. A megkülönboztetés segítésére van saját egyedi id-ja, ismeri a részvényt, amiből létrejött, így tudja frissíteni az értékét. 
+Represents a position. It has its own unique id, it knows the stock which it was created from, so it can update its own value.
 
-Tartalmazza a **PositionType enum** definícióját, aminek értéke lehet SHORT vagy LONG. 
+Contains the definition of **PositionType enum**, which can be SHORT or LONG.
 
-Egy ilyen PositionType attribútimmal indikálja a típusát. Továbbá tárolja a tőkeáttét értékét, illetve azt, hogy aktív-e még.
+Indicates its type with a PositionType attribute. It also stores the value of the leverage and whether it is still active.
 
-- **Gui package** 
+### **Gui package** 
 - **Frame** 
 
-A központi ablakot megvalósító osztály, mivel a programban egyetlen ilyen van, a legtöbb attribúma és függvénye static. Tartalmazza  
+The class that implements the main window, since there is only one in the program, most of its attributes and functions are static.
 
 - **StockPanel** 
 
-GUI-elem, ami ábrázol egy részvényt, annak aktuális értékét, a gombokat, amikkel kezelni lehet, valamint amivel meg lehet jeleníteni a grafikonját. 
+A GUI element that represents a stock, its current value, the buttons you can use to manage it and display its graph.
 
 - **PositionPanel** 
 
-GUI-elem, ami megvalósítja egy pozíció ábrázolását. Viselkedése függ a pozíció állapotától is, például csak aktív pozícióknál van Sell button, stb. 
+A GUI element that represents a position. Its behavior also depends on the status of the position, for example, it only has Sell button only for active positions.
 
 - **StockChart** 
 
-Osztály, ami megvalósítja egy részvény árfolyam-változásának ábrázolását. Ehhez felhasználja a JFreeChart library-t. 
+Responsible for displaying the graph for a given stock. It utilizes the JFreeChart library.
 
 - **NewGameActionListener** 
 
-Saját esemény-figyelő típus, ami megvalósítja egy új játék tétrehozását. 
+A custom event listener type that implements the creation of a new game.
 
 - **OpenActionListener** 
 
-Saját esemény-figyelő típus, ami kezdeményezi egy mentett játékmenet betöltését. 
+A custom event listener type that implements the loading of a saved gameplay.
 
 - **SaveActionListener** 
 
-Saját esemény-figyelő típus, ami kezdeményezi az aktuális játékmenet elmentését. 
+A custom event listener type that initiates the saving of the current gameplay.
 
 - **MakePositionActionListener** 
 
-Saját esemény-figyelő típus, ami kezdeményezi a hozzá tartozó részvényből pozíció létrehozását. 
+A custom event listener type that initiates the creation of a position from the associated stock.
 
 - **SellPositionActionListener** 
 
-Saját esemény-figyelő típus, ami kezdeményezi a hozzá tartozó pozíció eladását. 
+A custom event listener type that initiates the creation of a position from the associated stock.
 
 - **ShowStockChartActionListener** 
 
-Saját esemény-figyelő típus, ami megjleneníti a hozzá tartozó részvény grafikonját. 
+A custom event listener type that initiates the displaying of the correspondent stocks graph.
 
-- **Exceptions package** 
+### **Exceptions package** 
+
 - **NotEnoughFundException** 
 
-Saját kivétel típus, ami akkor dobódik, ha úgy probál a játékos pozíciót létrehozni, ha arra nincsen fedezete. 
+Custom exception type which is thrown when a player tries to create a position without enough capital.
 
-**Mentések** 
+**Saving** 
 
-Az aktuális játékmenetet el lehet menteni, ez szabványos Java szerializációval történik. Az osztálystruktúrát úgy terveztem, hogy egyetlen **Game** típusú objektum szerialzálására legyen szükség. 
+The current gameplay can be saved using standard Java serialization. I designed the class structure the way that only the serialization of a single **Game** object is needed during this process.
 
-A cél az volt, hogy a játékmenet aktuális állapotát 100%-os pontossággal reprodukálni lehessen a létrejövő fájlból, ugyanakkor ez a lehető legkisebb fájlméret mellett történjen. 
+The goal was to be able to reproduce the current state of the gameplay with 100% accuracy from the resulting file, while keeping the file size to a minimum.
 
-A game objektum közvetlenül tartalmazza a részvényeket (így azok korábbi értékeit is), valamint a hozzá tartozó **Player** típusú objektumot. A player pedig nyilvántartja a nevét, tőkéjét, valamint az aktív és lezárt pozícióit. Fontos, hogy a GUI-objektumok mindenképpen kimaradnak a szerializációbol, hiszen azok csak grafikusan reprezentálják a business-logic objektumokat, azaz betöltés után újra felépíthetők, elmenteni őket felesleges redundancia lenne. 
+The game object directly contains the stocks, including their previous values, as well as the associated **Player** object. The player contains its name, capital, active and closed positions. It is important that GUI objects are left out of serialization, as they only graphically represent business-logic objects, which can easily be rebuilt after loading, hence saving them would be unnecessary redundancy.
 
-Ennek eredményeképpen egy több órás játékmenet mérete is csupán pár száz KB. 
+As a result, the size of a multi-hour gameplay is only a few hundred KB.
 
-A mentések .ser kiterjesztést kapnak, ennek különösebb szerepe nincsen, de hasznos a felhasználó számára, hiszen indikálja, hogy szerializált objektumot tartalmaz. 
-
-**Use-case diagram és leírások** 
-
-![](Aspose.Words.86143563-45d8-4d51-8736-f1d8707bb6f9.016.png)
-<img width="1434" alt="Screenshot 2021-12-26 at 18 28 08" src="https://user-images.githubusercontent.com/22593928/147415665-ae06bd76-568c-43e9-80db-170564a5e553.png">
-- **Pozíció létrehozása**
-  - Long vagy short típusú pozíció létrehozása egy választott részvényen, opcionálisan tőkeáttéttel. A funkció **Stocks** oldalon érhető majd el. Mindegyik pozíció kap egy saját id-t, később ez alapján (meg persze az értéke és a részvény neve alapján) lehet azonosítani.
-- **Pozíció eladása**
-  - A már meglévő pozíció eladása. **Active positions** oldalon érhető el. Fel vannak sorolva a pozíciók, mindegyikhez saját Sell button tartozik.
-- **Árfolyamok megtekintése**
-  - A részvények árfolyamának megtekintése a **Stocks** oldalon lehetséges, Az árfolyam-előzmények grafikonokkal vannak ábrázolva, amiket az egyes részvényekhez tartozó **Show chart** buttonnal lehet megnyitni, ezek automatikusan frissülnek is.
-- **Játék elmentése**
-  - A **Game** JMenuben található **Save game** opcióval elérhető, létrehoz egy mentést.
-- **Mentett játék betöltése**
-  - A **Game** JMenuben található **Open game** opcióval elérhető, egy mentés fájlt ki lehet választani és betölteni.
-- **Nyitott pozíciók megtekintése**
-  - **Active positions** oldalon van a felsorolás, ahol a pozíciók attribútumai mellett a kezdeti és aktuális értékük is látható.
-- **Új játékos létrehozása**
-  - A **Game** JMenuben található **New game** opcióval elérhető, meg kell adni a játékosnak a nevét, aki valamennyi kezdőtőkével lesz ellátva.
-- **Lezárt pozíciók megtekintése**
-  - Értelemszerűen a **Closed positions** oldalon vannakfelsorolva. Az elértéktelenedés miatt lezáródott pozíciók is ide tartoznak.
-- **Árfolyamok változása**
-  - 3 másodpercenként változik minden részvény értéke. A változás mértéke random van meghatározva, de úgy, hogy valósághű látszatot keltsen.
+Savings are given a .ser extension, which has no special role, but is useful, because it indicates that the file is a serialized object.
 
 
 
